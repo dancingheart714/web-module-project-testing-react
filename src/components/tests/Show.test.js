@@ -5,22 +5,85 @@ import userEvent from '@testing-library/user-event';
 import Show from './../Show';
 
 const testShow = {
-    //add in approprate test data structure here.
-}
+  //add in approprate test data structure here.
+  name: 'Stranger Things',
+  image: {
+    medium:
+      'https://static.tvmaze.com/uploads/images/medium_portrait/200/501942.jpg',
+    original:
+      'https://static.tvmaze.com/uploads/images/original_untouched/200/501942.jpg',
+  },
+  summary:
+    "A love letter to the '80s classics that captivated a generation, Stranger Things is set in 1983 Indiana, where a young boy vanishes into thin air. As friends, family and local police search for answers, they are drawn into an extraordinary mystery involving top-secret government experiments, terrifying supernatural forces and one very strange little girl.",
+  seasons: [
+    {
+      id: 0,
+      name: 'Season 1',
+      episodes: [],
+    },
+    {
+      id: 1,
+      name: 'Season 2',
+      episodes: [],
+    },
+    {
+      id: 2,
+      name: 'Season 3',
+      episodes: [],
+    },
+    {
+      id: 3,
+      name: 'Season 4',
+      episodes: [],
+    },
+  ],
+};
 
-test('renders testShow and no selected Season without errors', ()=>{
+test('renders testShow and no selected Season without errors', () => {
+  render(<Show show={testShow} selectedSeason={'none'} />);
 });
 
 test('renders Loading component when prop show is null', () => {
+  //Arrange
+  render(<Show show={null} selectedSeason={'none'} />);
+  //Act
+  const loading = screen.queryByTestId('loading-container');
+  //Assert
+  expect(loading).toBeInTheDocument();
 });
 
-test('renders same number of options seasons are passed in', ()=>{
+test('renders same number of options seasons are passed in', () => {
+  //Arrange
+  render(<Show show={testShow} selectedSeason={'none'} />);
+  //Act
+  const seasons = screen.getAllByTestId('season-option');
+  //Assert
+  expect(seasons).toHaveLength(testShow.seasons.length);
 });
 
 test('handleSelect is called when an season is selected', () => {
+  //Arrange:  create a mock function
+  const mockHandleSelect = jest.fn();
+  render(
+    <Show
+      show={testShow}
+      selectedSeason={'none'}
+      handleSelect={mockHandleSelect}
+    />
+  );
+  //Act
+  const select = screen.queryByLabelText('Select A Season');
+  userEvent.selectOptions(select, ['1']);
+  //Assert
+  expect(mockHandleSelect).toHaveBeenCalledTimes(1);
 });
 
 test('component renders when no seasons are selected and when rerenders with a season passed in', () => {
+  const { rerender } = render(<Show show={testShow} selectedSeason={'none'} />);
+  expect(screen.queryByTestId('episodes-container')).not.toBeInTheDocument();
+
+  rerender(<Show show={testShow} selectedSeason={'0'} />);
+  expect(screen.queryByTestId('episodes-container')).toBeInTheDocument();
 });
 
 //Tasks:

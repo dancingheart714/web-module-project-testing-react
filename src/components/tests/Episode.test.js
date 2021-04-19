@@ -24,9 +24,12 @@ const testEpisodeWithoutImage = {
   runtime: 1,
 };
 
+//Complete a test that shows the Episode component renders. Pass in the provided example episode data as a test prop.
 test('renders without error', () => {
   render(<Episode episode={testEpisode} />);
 });
+
+//Modify the test data to display a specific summary statement. Complete a test that shows that the summary value passed in to the Episode component displays as expected. Use no more then 3 different expect statements to test the the existance of the summary value.
 
 test('renders the summury test passed as prop', () => {
   //Arrange
@@ -45,6 +48,8 @@ test('renders the summury test passed as prop', () => {
   expect(summary).not.toBeNull();
 });
 
+//The episode component displays a default value ('./stranger_things.png') when a image url is not provided. Create a new piece of test data with the image property set to null. Test that the alt tag of the image displayed is set to './stranger_things.png'.
+
 test('renders default image when image is not defined', () => {
   //Arrange
   render(<Episode episode={testEpisodeWithoutImage} />);
@@ -53,8 +58,3 @@ test('renders default image when image is not defined', () => {
   //Assert
   expect(image).toHaveAttribute('alt', './stranger_things.png');
 });
-
-//Tasks
-//1. Complete a test that shows the Episode component renders. Pass in the provided example episode data as a test prop.
-//2. Modify the test data to display a specific summary statement. Complete a test that shows that the summary value passed in to the Episode component displays as expected. Use no more then 3 different expect statements to test the the existance of the summary value.
-//3. The episode component displays a default value ('./stranger_things.png') when a image url is not provided. Create a new piece of test data with the image property set to null. Test that the alt tag of the image displayed is set to './stranger_things.png'.
